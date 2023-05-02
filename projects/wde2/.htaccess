@@ -1,0 +1,4 @@
+
+<IfModule mod_suphp.c>
+suPHP_ConfigPath /home/b11_33360046/public_html/php
+</IfModule>
