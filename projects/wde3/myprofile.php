@@ -157,7 +157,8 @@ if($email == false){
         <div class="section-title text-center mb-60">
         <form action="upload.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-          <div class="form-group">
+          <div class="form-group row center">
+          <div class="col-xs-2">
             <input class="form-control" type="hidden" name="oldimage" value="<?= $photo; ?>">
             <input class="form-control" type="file" name="image" class="custom-file">
           </div>
