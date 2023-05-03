@@ -1,11 +1,13 @@
 <?php
   include 'action.php';
+  session_start();
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 ?>
 <?php require_once "../wde2/controllerUserData.php"; ?>
 <?php 
+
 $email = $_SESSION['email'];
 $password = $_SESSION['password'];
 if($email != false && $password != false){
@@ -221,6 +223,7 @@ if($email != false && $password != false){
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#contact">Contact Me</a></li>
             <li>
             <?php
+            $user_id = 22;
             $query = "SELECT image FROM usertable WHERE id=?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("i", $user_id);
