@@ -141,19 +141,19 @@
             <div class="form-group">
               <input type="text" name="occupation" value="<?= $occupation; ?>" class="form-control" placeholder="Enter Occupation" required>
             </div>
-        <div class="form-group row center">
-            <div class="col-xs-2">
-          <label for="age">Age:</label>
-          <input class="form-control" type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
-          </div>
-        </div>		  
-        <div class="form-group">
-          <label for="gender">Gender:</label><br>
-          <input type="radio" id="male" name="gender" value="Male" <?php if($gender == 'Male') echo 'checked'; ?> >
-          <label for="male">Male</label>
-          <input type="radio" id="female" name="gender" value="Female" <?php if($gender == 'Female') echo 'checked'; ?> >
-          <label for="female">Female</label>
-        </div>
+            <div class="form-group row center">
+                <div class="col-xs-6">
+                    <label for="age">Age:</label>
+                    <input class="form-control" type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
+                </div>
+                <div class="col-xs-6">
+                    <label for="gender">Gender:</label><br>
+                    <input type="radio" id="male" name="gender" value="Male" <?php if($gender == 'Male') echo 'checked'; ?> >
+                    <label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="Female" <?php if($gender == 'Female') echo 'checked'; ?> >
+                    <label for="female">Female</label>
+                </div>
+            </div>
         <div class="form-group">
           <label for="birthdate">Birthday:</label>
           <input class="form-control" type="date" id="birthdate" name="birthdate" value="<?= $birthdate; ?>" required>
@@ -170,6 +170,7 @@
           </select>
         </div>
             <div class="form-group">
+              <label for="image">Select your profile image:</label>
               <input class="form-control" type="hidden" name="oldimage" value="<?= $photo; ?>">
               <input class="form-control" type="file" name="image" class="custom-file">
             </div>
