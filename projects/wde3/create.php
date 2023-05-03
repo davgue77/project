@@ -89,7 +89,7 @@
 
         <nav id="navbar" class="navbar">
             <ul>
-            <li><a class="nav-link scrollto active" href="http://davgue77.byethost11.com/">Home</a></li>
+            <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/">Home</a></li>
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#about">About Me</a></li>
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#services">Interests</a></li>
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#portfolio">Projects</a></li>
@@ -133,7 +133,7 @@
               <input type="email" name="email" value="<?= $email; ?>" class="form-control" placeholder="Enter E-mail" required>
             </div>
             <div class="form-group" maxlength="6">
-              <input type="tel" name="phone" value="<?= $phone; ?>" class="form-control" maxlength="6" placeholder="Enter Phone Number" required>
+              <input type="number" name="phone" value="<?= $phone; ?>" class="form-control" maxlength="7" placeholder="Enter Phone Number" required>
             </div>
             <div class="form-group">
               <input type="text" name="address" value="<?= $address; ?>" class="form-control" placeholder="Enter Street Address" required>
