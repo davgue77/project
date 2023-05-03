@@ -227,7 +227,7 @@ if($email != false && $password != false){
             <?php
 
             
-            $user_id = '22';
+            $user_id = $_SESSION['id'];
 
             $query = "SELECT image FROM usertable WHERE id=?";
             $stmt = $conn->prepare($query);
