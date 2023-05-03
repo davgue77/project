@@ -143,9 +143,9 @@
             </div>
         <div class="form-group row center">
             <div class="col-xs-2">
-              <label class="form-control" for="age">Age:</label>
-              <input type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
-             </div>
+          <label for="age">Age:</label>
+          <input class="form-control" type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
+          </div>
         </div>		  
         <div class="form-group">
           <label for="gender">Gender:</label><br>
