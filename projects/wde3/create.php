@@ -168,8 +168,8 @@
           </select>
         </div>
             <div class="form-group">
-              <input type="hidden" name="oldimage" value="<?= $photo; ?>">
-              <input type="file" name="image" class="custom-file">
+              <input class="form-control" type="hidden" name="oldimage" value="<?= $photo; ?>">
+              <input class="form-control" type="file" name="image" class="custom-file">
             </div>
             <div class="form-group">
               <?php if ($update == true) { ?>
