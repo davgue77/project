@@ -1,13 +1,31 @@
+<?php
+  include 'action.php';
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+?>
 <?php require_once "../wde2/controllerUserData.php"; ?>
 <?php 
 $email = $_SESSION['email'];
-if($email == false){
-  header('Location: ../wde2/login-user.php');
+$password = $_SESSION['password'];
+if($email != false && $password != false){
+    $sql = "SELECT * FROM usertable WHERE email = '$email'";
+    $run_Sql = mysqli_query($con, $sql);
+    if($run_Sql){
+        $fetch_info = mysqli_fetch_assoc($run_Sql);
+        $status = $fetch_info['status'];
+        $code = $fetch_info['code'];
+        if($status == "verified"){
+            if($code != 0){
+                header('Location: ../wde2/reset-code.php');
+            }
+        }else{
+            header('Location: ../wde2/user-otp.php');
+        }
+    }
+}else{
+    header('Location: ../wde2/login-user.php');
 }
-?>
-
-<?php
-  include 'upload.php';
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +56,7 @@ if($email == false){
     <link href="../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+    
     <!-- Template Main CSS File -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -67,7 +86,7 @@ if($email == false){
 
         img {
             border-radius: 8px;
-            max-width: 100%;
+            max-width: 50%;
             height: auto;
         }
 
@@ -77,6 +96,107 @@ if($email == false){
             margin-right: auto;
             width: 50%;
         }
+
+        html {
+          box-sizing: border-box;
+        }
+
+        * {
+          box-sizing: inherit;
+        }
+
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+
+        nav {
+          background-color: #fff;
+          padding: 0 3rem;
+          border-radius: 0.625rem;
+        }
+
+        
+
+        li {
+          list-style-type: none;
+          position: relative;
+          padding: 0.625rem 0 0.5rem;
+        }
+        li ul {
+          flex-direction: column;
+          position: absolute;
+          background-color: white;
+          align-items: flex-start;
+          transition: all 0.5s ease;
+          width: 20rem;
+          right: -3rem;
+          top: 4.5rem;
+          border-radius: 0.325rem;
+          gap: 0;
+          padding: 1rem 0rem;
+          opacity: 0;
+          box-shadow: 0px 0px 100px rgba(20, 18, 18, 0.25);
+          display: none;
+        }
+
+        ul li:hover > ul,
+        ul li ul:hover {
+          visibility: visible;
+          opacity: 1;
+          display: flex;
+        }
+
+        .material-icons-outlined {
+          color: #888888;
+          transition: all 0.3s ease-out;
+        }
+
+        .material-icons-outlined:hover {
+          color: #ff9800;
+          transform: scale(1.25) translateY(-4px);
+          cursor: pointer;
+        }
+
+
+        .profile {
+          height: 3rem;
+          width: auto;
+          cursor: pointer;
+        }
+
+        .sub-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 0.725rem;
+          cursor: pointer;
+          padding: 0.5rem 1.5rem;
+        }
+
+        .sub-item:hover {
+          background-color: rgba(232, 232, 232, 0.4);
+        }
+
+        .sub-item:hover .material-icons-outlined {
+          color: #ff9800;
+          transform: scale(1.08) translateY(-2px);
+          cursor: pointer;
+        }
+
+        .sub-item:hover p {
+          color: #000;
+          cursor: pointer;
+        }
+
+        .sub-item p {
+          font-size: 0.85rem;
+          color: #888888;
+          font-weight: 500;
+          margin: 0.4rem 0;
+          flex: 1;
+        }
+        
 
     </style>
 
@@ -99,8 +219,45 @@ if($email == false){
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#services">Interests</a></li>
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#portfolio">Projects</a></li>
             <li><a class="nav-link scrollto" href="http://davgue77.byethost11.com/#contact">Contact Me</a></li>
+            <li>
+            <?php
+            $query = "SELECT image FROM usertable WHERE id=?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+
+            if ($stmt->error) {
+                die("Error: " . $stmt->error);
+            }
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $profile = $row['image'];
+            }
+            ?>
             
-            <li><a type="button" class="getstarted scrollto" href="logout-user.php">Logout</a></li>
+            <a href="#">
+                <img src="<?php echo $profile; ?>" class="profile"/>
+            </a>
+            
+
+              <ul>
+                <li class="sub-item">
+                  <a href="myprofile.php">
+                    <span class="material-icons-outlined"></span>
+                    <p>My Profile</p>
+                  </a>
+                </li>
+                <li class="sub-item">
+                  <a href="../wde2/logout-user.php">
+                    <span class="material-icons-outlined"></span>
+                    <p>Logout</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -109,69 +266,179 @@ if($email == false){
     </header><!-- End Header -->
     <main id="main">
     <section id="services" class="services section-bg">
-<!-- STARTS HERE THE DISPLAYING -->
-<div class="container" data-aos="fade-up">
-        <div class="row justify-content-center">
-          <div class="col-lg-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-        <form action="../wde2/new-password.php" method="POST" autocomplete="off">
-                            <?php 
-                            if(isset($_SESSION['info'])){
-                                ?>
-                                <div class="alert alert-success text-center">
-                                    <?php echo $_SESSION['info']; ?>
-                                </div>
-                                <?php
-                            }
-                            ?>
-                            <?php
-                            if(count($errors) > 0){
-                                ?>
-                                <div class="alert alert-danger text-center">
-                                    <?php
-                                    foreach($errors as $showerror){
-                                        echo $showerror;
-                                    }
-                                    ?>
-                                </div>
-                                <?php
-                            }
-                            ?>
-                            <div class="form-group">
-                                <input class="form-control" type="password" name="password" placeholder="Create new password" required>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" type="password" name="cpassword" placeholder="Confirm your password" required>
-                            </div>
-                            <div class="form-group">
-                                <input class="btn btn-primary" style="background-color:#5777ba; border-color:#5777ba" type="submit" name="change-password" value="Change">
-                            </div>
-                        </form>
 
-                        
-            </div>
-        </div>
-    </div>
-
-        
-        <div class="section-title text-center mb-60">
-        <form action="upload.php" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-          <div class="form-group row center">
-          <div class="col-xs-2">
-            <input class="form-control" type="hidden" name="oldimage" value="<?= $photo; ?>">
-            <input class="form-control" type="file" name="image" class="custom-file">
-            </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+          <div class="section-title text-center pb-30">
+            <h2>Admin Dashboard</h2>
+            <p>All Student Records!</p>
           </div>
+        <?php if (isset($_SESSION['response'])) { ?>
+        <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <b><?= $_SESSION['response']; ?></b>
         </div>
-        <button type="submit" name="upload" class="btn btn-light" style="color: #5777ba;"><i class="bi bi-plus"></i>Upload Image</button>
+        <?php } unset($_SESSION['response']); ?>
+      </div>
+      <!-- *************************************************************** -->
+      <!-- Start First Cards -->
+      <!-- *************************************************************** -->
+      <div class="row">
+      <div class="card-deck mb-3">
+      <div class="card border-right">
+        <div class="card-body">
+            <div class="d-flex d-lg-flex d-md-block align-items-center">
+                <div>
+                    <div class="d-inline-flex align-items-center">
+                      <h2>
+                      <?php
+                          $sql = "SELECT id FROM usertable";
+                          $query = $conn->query($sql);
+                          echo $query->num_rows;
+                      ?> 
+                      </h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Admin Accounts</h6>
+                </div>
+                <div class="ml-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted"><i data-feather="user"></i></span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="card border-right">
+        <div class="card-body">
+            <div class="d-flex d-lg-flex d-md-block align-items-center">
+                <div>
+                    <div class="d-inline-flex align-items-center">
+                      <h2>
+                      <?php
+                          $sql = "SELECT id FROM crud";
+                          $query = $conn->query($sql);
+                          echo $query->num_rows;
+                      ?> 
+                      </h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Student Records</h6>
+                </div>
+                <div class="ml-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted"><i data-feather="user"></i></span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="card border-right">
+        <div class="card-body">
+            <div class="d-flex d-lg-flex d-md-block align-items-center">
+                <div>
+                    <div class="d-inline-flex align-items-center">
+                      <h2>
+                      <?php
+                          $sql = "SELECT id FROM crud WHERE gender='Male'";
+                          $query = $conn->query($sql);
+                          echo $query->num_rows;
+                      ?> 
+                      </h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Male Students</h6>
+                </div>
+                <div class="ml-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted"><i data-feather="user"></i></span>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="card border-right">
+        <div class="card-body">
+            <div class="d-flex d-lg-flex d-md-block align-items-center">
+                <div>
+                    <div class="d-inline-flex align-items-center">
+                      <h2>
+                      <?php
+                          $sql = "SELECT id FROM crud WHERE gender='Female'";
+                          $query = $conn->query($sql);
+                          echo $query->num_rows;
+                      ?> 
+                      </h2>
+                    </div>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Female Students</h6>
+                </div>
+                <div class="ml-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted"><i data-feather="user"></i></span>
+                </div>
+            </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      <!-- *************************************************************** -->
+      <!-- End First Cards -->
+      <!-- *************************************************************** -->  
+    </div>
+        <?php
+          $query = 'SELECT * FROM crud';
+          $stmt = $conn->prepare($query);
+          $stmt->execute();
+          $result = $stmt->get_result();
+        ?>
+        <table class="table table-hover" id="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Occupation</th>
+              <th>Age</th>
+              <th>Major</th>
+              <th>Gender</th>
+              <th>Birthdate</th>			  
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+            <tr>
+              <td><?= $row['id']; ?></td>
+              <td><img src="<?= $row['photo']; ?>" width="25"></td>
+              <td><?= $row['name']; ?></td>
+              <td><?= $row['email']; ?></td>
+              <td><?= $row['phone']; ?></td>
+              <td><?= $row['address']; ?></td>
+              <td><?= $row['occupation']; ?></td>
+              <td><?= $row['age']; ?></td>
+              <td><?= $row['major']; ?></td>
+              <td><?= $row['gender']; ?></td>
+              <td><?= $row['birthdate']; ?></td>			  
+              <td>
+                <a href="details.php?details=<?= $row['id']; ?>" class="badge badge-primary p-2">Details</a> |
+                <a href="action.php?delete=<?= $row['id']; ?>" class="badge badge-danger p-2" onclick="return confirm('Do you want delete this record?');">Delete</a> |
+                <a href="create.php?edit=<?= $row['id']; ?>" class="badge badge-success p-2">Edit</a>
+              </td>
+            </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('#data-table').DataTable({
+      paging: true
+    });
+  });
+  </script>
+  
+  <br> 
+  <div class="section-title text-center mb-60">
+        <button type="button" class="btn btn-light"><a href="create.php"><i class="bi bi-plus"></i> Create Student Record</a></button>
+  </div>
 
-        </form>
-        <br>
-        <div class="section-title text-center mb-60">
-            <button type="button" class="btn btn-light"><a href="index.php"><i class="bi bi-backspace"></i> Back</a></button>
-        </div>
-        </div>
   </section>
   </main><!-- End #main -->
 
