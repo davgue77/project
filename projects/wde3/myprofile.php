@@ -161,6 +161,7 @@ if($email == false){
           <div class="col-xs-2">
             <input class="form-control" type="hidden" name="oldimage" value="<?= $photo; ?>">
             <input class="form-control" type="file" name="image" class="custom-file">
+            </div>
           </div>
         </div>
         <button type="submit" name="upload" class="btn btn-light" style="color: #5777ba;"><i class="bi bi-plus"></i>Upload Image</button>
