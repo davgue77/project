@@ -142,7 +142,7 @@
               <input type="text" name="occupation" value="<?= $occupation; ?>" class="form-control" placeholder="Enter Occupation" required>
             </div>
         <div class="form-group">
-          <label for="age">Age:</label>
+          <label class="form-control" for="age">Age:</label>
           <input type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
         </div>		  
         <div class="form-group">
@@ -154,11 +154,11 @@
         </div>
         <div class="form-group">
           <label for="birthdate">Birthday:</label>
-          <input type="date" id="birthdate" name="birthdate" value="<?= $birthdate; ?>" required>
+          <input class="form-control" type="date" id="birthdate" name="birthdate" value="<?= $birthdate; ?>" required>
         </div>
         <div class="form-group">
           <label for="major">Select your major:</label>
-          <select id="major" name="major" value="<?= $major; ?>">
+          <select class="form-control" id="major" name="major" value="<?= $major; ?>">
           <option value="Computer Science">Computer Science</option>
           <option value="Engineering">Engineering</option>
           <option value="Business">Business</option>
