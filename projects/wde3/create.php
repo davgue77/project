@@ -141,9 +141,11 @@
             <div class="form-group">
               <input type="text" name="occupation" value="<?= $occupation; ?>" class="form-control" placeholder="Enter Occupation" required>
             </div>
-        <div class="form-group">
-          <label class="form-control" for="age">Age:</label>
-          <input type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
+        <div class="form-group row center">
+            <div class="col-xs-2">
+              <label class="form-control" for="age">Age:</label>
+              <input type="number" id="age" name="age" min="0" max="150" value="<?= $age; ?>"required>
+             </div>
         </div>		  
         <div class="form-group">
           <label for="gender">Gender:</label><br>
